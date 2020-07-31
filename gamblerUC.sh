@@ -1,9 +1,14 @@
 #!/bin/bash
-#UC-06:-> Gambler wants to know his/her luckiest day where he/she won maximum and unluckiest day where he/she lost maximum
+#UC-07:-> If Gambler won would like to continue playing next month or stop Gambling
 
 #Initialising the varible
 stake=100
 Bet=1
+month=0
+
+#Creating loop if user whats to continue playing after 1 month
+while [ $month == 0 ]
+do
 winPerDay=150
 losePerDay=50
 numOfDay=0
@@ -27,15 +32,16 @@ numOfLoss=0
 totalNumOfGambled=0
 
 #Creating a loop for Gambling  with consideration of either 50% win or 50 % Loose
-   while [ $cash -gt $losePerDay ] && [ $cash -lt $winPerDay ]
+while [ $cash -gt $losePerDay ] && [ $cash -lt $winPerDay ]
    do
-      round=$(( $round + 1 ))
       luckyRoll=$(( RANDOM % 2 ))
       if [ $luckyRoll -eq 1 ]
          then
+         #echo "Congratulation...! You won the $Bet"
          cash=$(( $cash+$Bet ))
          numOfWin=$(( $numOfWin + 1 ))
          else
+         #echo "Sorry...! You Lost $Bet"
          cash=$(( $cash-$Bet ))
          numOfLoss=$(( $numOfLoss + 1 ))
       fi
@@ -47,7 +53,7 @@ totalNumOfGambled=0
 
 #Calculating the Win and Lose percentage
    if [ $maxWinPercentage -lt $percentageWin ]
-   then
+   	then
       maxWinPercentage=$percentageWin
       dayMaxWin=$numOfDay
    fi
@@ -57,7 +63,6 @@ totalNumOfGambled=0
       maxLossPercentage=$percentageLoss
       dayMaxLoss=$numOfDay
    fi
-
 
    if [ $cash == $winPerDay ]
       then
@@ -76,8 +81,30 @@ totalNumOfGambled=0
       echo "Till Day $numOfDay :Amount Won- $totalAmountWon || AmountLost- $totalAmountLost"
    fi
 done
-
 echo "Days History: Number of Days WON: $numOfDaysWon and Number of Days Lost: $numOfDaysLost in month"
 echo "Total Balance at end of Month : $totalBalance"
 echo "Maximum Won on $dayMaxWin th Day"
 echo "Maximum Loss on $dayMaxLoss th Day"
+
+#To Continue playing for next month
+	if [ $numOfDaysWon -ge 15 ]
+   	then
+   	echo "Would like to Continue Playing?"
+   	read -p "Enter Y to CONTINUE & N to STOP : " entry
+
+      	if [ $entry == "y" ] || [ $entry == "Y" ]
+      		then
+      		echo "New Game"
+      		else
+      		echo "Thank you for Playing with us...!"
+      		month=$(( $month + 1 ))
+      	fi
+	fi
+
+	if [ $numOfDaysWon -lt 15 ]
+		then
+		echo "Sorry...! Your luck is bad for now. Can't Continue "
+		month=$(( $month + 1 ))
+	fi
+done
+
