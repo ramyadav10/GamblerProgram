@@ -1,10 +1,15 @@
 #!/bin/bash
+#UC-02:-> Gambler make $1 bet so either win or loose $1
 
-#UC-01:-> Gambler would start with a stake of $100 every day and can bet $1 each game
-
-#Intialising variables
+#Initialising Variables
 Stake=100
 Bet=1
 
-echo "Stake for per day Gambling: $ $Stake"
-echo "Bet: $ $Bet"
+#Gambling for checking  result
+luckyRoll=$(( RANDOM % 2 ))
+if [ $luckyRoll -eq 1 ]
+then
+echo "Congratulation...! You won the $Bet"
+else
+echo "Sorry...! You Lost $Bet"
+fi
