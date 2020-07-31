@@ -1,5 +1,5 @@
 #!/bin/bash
-#UC-05:-> Gambling for Each month would like to know the days won and lost and by how much.
+#UC-06:-> Gambler wants to know his/her luckiest day where he/she won maximum and unluckiest day where he/she lost maximum
 
 #Initialising the varible
 stake=100
@@ -12,26 +12,52 @@ totalAmountWon=0
 totalAmountLost=0
 numOfDaysWon=0
 numOfDaysLost=0
+maxWinPercentage=0
+maxLossPercentage=0
+dayMaxWin=0
+dayMaxLoss=0
 
 #Creating a loop to calculate for 30 days
 while [ $numOfDay -lt 30 ]
 do
 numOfDay=$(( $numOfDay + 1 ))
 cash=$stake
+numOfWin=0
+numOfLoss=0
+totalNumOfGambled=0
 
 #Creating a loop for Gambling  with consideration of either 50% win or 50 % Loose
    while [ $cash -gt $losePerDay ] && [ $cash -lt $winPerDay ]
    do
+      round=$(( $round + 1 ))
       luckyRoll=$(( RANDOM % 2 ))
       if [ $luckyRoll -eq 1 ]
          then
-         #echo "Congratulation...! You won the $Bet"
          cash=$(( $cash+$Bet ))
+         numOfWin=$(( $numOfWin + 1 ))
          else
-         #echo "Sorry...! You Lost $Bet"
          cash=$(( $cash-$Bet ))
+         numOfLoss=$(( $numOfLoss + 1 ))
       fi
    done
+   totalNumOfGambled=$(( $numOfWin + $numOfLoss ))
+
+   percentageWin=$(( 100 * $numOfWin/$totalNumOfGambled ))
+   percentageLoss=$(( 100 * $numOfLoss/$totalNumOfGambled ))
+
+#Calculating the Win and Lose percentage
+   if [ $maxWinPercentage -lt $percentageWin ]
+   then
+      maxWinPercentage=$percentageWin
+      dayMaxWin=$numOfDay
+   fi
+
+   if [ $maxLossPercentage -lt $percentageLoss ]
+   then
+      maxLossPercentage=$percentageLoss
+      dayMaxLoss=$numOfDay
+   fi
+
 
    if [ $cash == $winPerDay ]
       then
@@ -51,6 +77,7 @@ cash=$stake
    fi
 done
 
-echo "Day History: Number of Days WON: $numOfDaysWon and Number of Days Lost: $numOfDaysLost in month"
-echo "Total Balance: $totalBalance"
-
+echo "Days History: Number of Days WON: $numOfDaysWon and Number of Days Lost: $numOfDaysLost in month"
+echo "Total Balance at end of Month : $totalBalance"
+echo "Maximum Won on $dayMaxWin th Day"
+echo "Maximum Loss on $dayMaxLoss th Day"
