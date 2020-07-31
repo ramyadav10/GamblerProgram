@@ -1,5 +1,5 @@
 #!/bin/bash
-#!/bin/bash
+
 #UC-01:-> Gambler would start with a stake of $100 every day and can bet $1 eac>
 
 #Intialising variables
